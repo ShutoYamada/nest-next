@@ -1,0 +1,36 @@
+version: "3.7"
+
+# コンテナ設計
+services:
+  # バックエンド
+  backend:
+    # ビルド設定
+    build:
+      context: .
+      dockerfile: ./packages/backend/Dockerfile
+    #
+    tty: true
+    # ボリュームマウント設定
+    volumes:
+      - type: bind
+        source: ./packages/backend
+        target: /api
+    ports:
+      # コンテナの3000をホストの3000へ割り当て
+      - "3000:3000"
+  # フロントエンド
+  frontend:
+    # ビルド設定
+    build:
+      context: .
+      dockerfile: ./packages/frontend/Dockerfile
+    tty: true
+    # ボリュームマウント設定
+    volumes:
+      - type: bind
+        source: ./packages/frontend
+        target: /app
+    # ポート設定
+    ports:
+      # コンテナの3333をホストの3333へ割り当て
+      - "3333:3333"
